@@ -2,4 +2,4 @@
 
 # Description of App
 
-This app could be used to save and doing part of library administration. 
+High School Library Administration could be used to save and doing part of library administration. This app designed originally to be accessed on local network and in Bahasa Indonesia. But, for Shiny Contest Submission 
