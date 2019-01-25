@@ -8,4 +8,4 @@ This app have menus:
 1. # Attendance 
     Attendee of students
 2. Borrow
-    The borrowing data (member's data, book's data, etc.)
+    The borrowing data (member's data, book's data, etc.) 
