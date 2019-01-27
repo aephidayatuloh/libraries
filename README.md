@@ -1,4 +1,4 @@
-# library : High School Library Administration Using Shiny
+# libraries : High School Library Administration Using Shiny
 
 # Description of App
 
