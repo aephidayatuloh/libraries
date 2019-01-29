@@ -384,7 +384,7 @@ shinyUI(
                                                )
                                      ),
                                      DT::dataTableOutput("tbl_buku_baru_upload"))
-                 )#,
+                 ),
                  # navbarMenu("Anggota", icon = icon("users"),
                  #            tabPanel("Tambah Anggota", icon = icon("plus-circle")),
                  #            tabPanel("Edit Data Anggota", icon = icon("pencil"),
@@ -394,9 +394,33 @@ shinyUI(
                  #                       tabPanel("b")
                  #                     ))
                  # ),
-                 # tabPanel("Laporan", icon = icon("copy"),
-                 #          downloadButton("laporan", label = "Unduh Laporan", class = "btn-success")
-                 # ),
+                 tabPanel("Reports", icon = icon("copy"),
+                          wellPanel(style = paste0("background:", panel_colr_val, ";"),
+                                    div(style = "display:inline-block;vertical-align:top;", 
+                                        h4("Period", style = "font-weight:bold;color:darkblue;")
+                                        ),
+                                    div(style = "display:inline-block;vertical-align:top;", 
+                                        h4(" : ", style = "font-weight:bold;color:darkblue;")
+                                        ),
+                                    div(style = "display:inline-block;vertical-align:top;", 
+                                        dateRangeInput("periode_laporan", NULL, start = Sys.Date()-30, end = Sys.Date())
+                                        ),
+                                    div(style = "display:inline-block;vertical-align:top;", 
+                                        actionButton("tampil_laporan", "View Report", icon = icon("clipboard-list"), class = "btn-primary")
+                                        ),
+                                    div(style = "display:inline-block;vertical-align:top;", 
+                                        downloadButton("dwnlaporan", label = "Export", class = "btn-success")
+                                        )
+                          ),
+                          column(6, 
+                                 wellPanel(style = paste0("background:none;"),
+                                              highchartOutput("report1"))
+                                 ),
+                          column(6, 
+                                 wellPanel(style = paste0("background:none;"),
+                                           highchartOutput("report2"))
+                          )
+                 )#,
                  # tabPanel("Pengaturan", icon = icon("cogs"),
                  #          wellPanel(style = paste0("background:", panel_colr_val,";"),
                  #                    div(style = "display:inline-block;vertical-align:top;width:30%;", h5("Warna Panel :", style = "font-weight:bold;color:darkblue;")),

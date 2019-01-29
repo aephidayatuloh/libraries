@@ -3,6 +3,7 @@ options(shiny.maxRequestSize=30*1024^2)
 library(shiny)
 library(shinyjs)
 
+# theme_set(theme_bw())
 shinyServer(function(input, output, session) {
   
   # TabPanel Daftar Hadir
@@ -636,6 +637,51 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  laporan_data <- eventReactive(input$tampil_laporan, {
+    x <- getTable("PINJAM", dataloc)
+    x$BORROW_DATE <- as_datetime(x$BORROW_DATE)
+    x$LAST_RETURN_DATE <- as_datetime(x$LAST_RETURN_DATE)
+    x$RETURN_DATE <- as_datetime(x$RETURN_DATE)
+    x <- x %>% filter(BORROW_DATE >= input$periode_laporan[1] & BORROW_DATE <= input$periode_laporan[2])
+    if(is.null(x) | nrow(x) == 0) 
+    {
+      showModal(modalDialog(
+        title = "System Information", footer = modalButton("Close", icon = icon("times-circle")),
+        "There is no data on this period.", easyClose = FALSE
+      ))
+      # return(NULL)
+    }
+    x
+  })
+  
+  output$report1 <- renderHighchart({
+    if(is.null(laporan_data()) | nrow(laporan_data()) == 0) 
+    {
+      return(NULL)
+    }
+    laporan <- laporan_data()
+    laporan %>% count(TITLE) %>% hchart(type = "column", hcaes(x = TITLE, y = n))
+  })
+  
+  output$report2 <- renderHighchart({
+    if(is.null(laporan_data()) | nrow(laporan_data()) == 0) 
+    {
+      return(NULL)
+    }
+    laporan <- laporan_data()
+    dtl <- laporan %>% count(NAME, TITLE)
+    hchart(dtl, type = "column", hcaes(x = NAME, y = n, group = TITLE))
+  })
+  
+  output$dwnlaporan <- downloadHandler(
+    filename = function(){
+      paste0("Report.xlsx")
+    },
+    content = function(con){
+      write.xlsx(laporan_data(), con)
+      # file.copy("data/Template Tambah Buku.xlsx", con)
+    }
+  )
   # session$onSessionEnded(function() {
   #       stopApp()
   # 		q("no")

@@ -2,7 +2,9 @@ library(RSQLite)
 library(xlsx)
 library(dplyr)
 library(DT)
-library(ggplot2)
+# library(ggplot2)
+library(lubridate)
+library(highcharter)
 
 
 # app/shiny/
